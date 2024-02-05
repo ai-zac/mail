@@ -17,6 +17,16 @@ textarea {
   width: 100%;
 }
 
+.read-true {
+  background: gray;
+  color: white;
+}
+
+.read-true button {
+  color: white;
+  border-color: white;
+}
+
 .mail-title {
   display: flex;
 }

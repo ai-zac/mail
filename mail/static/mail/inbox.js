@@ -36,7 +36,7 @@ function load_mailbox(mailbox) {
       // if sucess
       emails.forEach((email) => {
         emailsView.innerHTML += `
-          <div class="mails">
+          <div class="mails read-${email.read}">
             <div class="mail-title mail-left">
               <b>${email.sender}</b>
               <p>${email.subject}</p>
@@ -52,7 +52,9 @@ function load_mailbox(mailbox) {
       let emailsList = document.querySelectorAll(".mails");
       emailsList.forEach((email) => {
         let id = email.querySelector(".mail-id").value;
-        email.querySelector(".mail-title").addEventListener("click", () => show_email(id));
+        email
+          .querySelector(".mail-title")
+          .addEventListener("click", () => show_email(id));
 
         // ARCHIVE FEATURE
         // Set all arhive buttons to "unarchive"
@@ -62,22 +64,22 @@ function load_mailbox(mailbox) {
         if (mailbox !== "sent") {
           email.querySelector(".mail-right").innerHTML +=
             `<button class="mail-archive btn btn-sm btn-outline-primary">${archiveState}</button>`;
-        }
 
-        email.querySelector(".mail-archive").addEventListener("click", () => {
-          // Set the mail to "unarchive" when the mailbox is in "archive"
-          // and "archive" when not
-          let archived = mailbox === "archive" ? false : true;
-          fetch("/emails/" + id, {
-            method: "PUT",
-            body: JSON.stringify({
-              archived: archived,
-            }),
+          email.querySelector(".mail-archive").addEventListener("click", () => {
+            // Set the mail to "unarchive" when the mailbox is in "archive"
+            // and "archive" when not
+            let archived = mailbox === "archive" ? false : true;
+            fetch("/emails/" + id, {
+              method: "PUT",
+              body: JSON.stringify({
+                archived: archived,
+              }),
+            });
+
+            // Then load user's inbox
+            location.reload();
           });
-
-          // Then load user's inbox 
-          location.reload()
-        });
+        }
       });
     });
 }
