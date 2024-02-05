@@ -29,10 +29,11 @@ function load_mailbox(mailbox) {
   // Show the mailbox name
   emailsView.innerHTML = `<h3>${mailbox.charAt(0).toUpperCase() + mailbox.slice(1)}</h3>`;
 
+  // Get and show all mailbox's emails
   fetch("/emails/" + mailbox)
     .then((response) => response.json())
     .then((emails) => {
-      // Print emails
+      // if sucess
       emails.forEach((email) => {
         emailsView.innerHTML += `
           <div class="mails">
@@ -47,6 +48,7 @@ function load_mailbox(mailbox) {
           </div>`;
       });
 
+      // Then add to each email a link to preview 
       let emailsList = document.querySelectorAll(".mails");
       emailsList.forEach((email) => {
         let id = email.querySelector(".mail-id").value;
@@ -95,6 +97,7 @@ function show_email(id) {
   // Show email preview
   let emailPreview = document.querySelector("#email-preview");
   emailPreview.style.display = "block";
+  emailPreview.innerHTML = " ";
 
   fetch("/emails/" + id)
     .then((response) => response.json())
