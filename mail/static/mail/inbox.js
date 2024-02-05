@@ -36,23 +36,48 @@ function load_mailbox(mailbox) {
       // if sucess
       emails.forEach((email) => {
         emailsView.innerHTML += `
-          <button class="mails">
-            <div class="mail-title">
+          <div class="mails">
+            <div class="mail-title mail-left">
               <b>${email.sender}</b>
               <p>${email.subject}</p>
             </div>
-            <div class="mail-timestamp">
+            <div class="mail-timestamp mail-right">
               <i>${email.timestamp}</i>
             </div>
             <input type="number" value=${email.id} class="mail-id" hidden>
-          </button>`;
+          </div>`;
       });
 
-      // Then add to each email a link to preview 
+      // Then add to each email a link to preview
       let emailsList = document.querySelectorAll(".mails");
       emailsList.forEach((email) => {
         let id = email.querySelector(".mail-id").value;
-        email.addEventListener("click", () => show_email(id));
+        email.querySelector(".mail-title").addEventListener("click", () => show_email(id));
+
+        // ARCHIVE FEATURE
+        // Set all arhive buttons to "unarchive"
+        // if the current mailbox is not "archive"
+        let archiveState = mailbox === "archive" ? "unarchive" : "archive";
+        // Don't show archive button in Sent mailbox
+        if (mailbox !== "sent") {
+          email.querySelector(".mail-right").innerHTML +=
+            `<button class="mail-archive btn btn-sm btn-outline-primary">${archiveState}</button>`;
+        }
+
+        email.querySelector(".mail-archive").addEventListener("click", () => {
+          // Set the mail to "unarchive" when the mailbox is in "archive"
+          // and "archive" when not
+          let archived = mailbox === "archive" ? false : true;
+          fetch("/emails/" + id, {
+            method: "PUT",
+            body: JSON.stringify({
+              archived: archived,
+            }),
+          });
+
+          // Then load user's inbox 
+          location.reload()
+        });
       });
     });
 }
@@ -84,7 +109,7 @@ function send_mail() {
   })
     .then((response) => response.json())
     .then((result) => {
-      // Print result
+      // Show result
       alert(JSON.stringify(result));
     });
 }
