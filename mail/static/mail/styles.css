@@ -12,16 +12,15 @@ textarea {
   justify-content: space-between;
   border: 2px solid black;
   padding: 10px 5px 10px 5px;
+  background: white;
   color: black;
+  width: 100%;
 }
 
 .mail-title {
   display: flex;
 }
 
-/* 
- * Parragraph makes auto margin bottom
- */
 .mail-title p {
   margin-bottom: 0px;
   font-weight: 500;

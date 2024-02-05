@@ -36,7 +36,7 @@ function load_mailbox(mailbox) {
       // if sucess
       emails.forEach((email) => {
         emailsView.innerHTML += `
-          <div class="mails">
+          <button class="mails">
             <div class="mail-title">
               <b>${email.sender}</b>
               <p>${email.subject}</p>
@@ -45,7 +45,7 @@ function load_mailbox(mailbox) {
               <i>${email.timestamp}</i>
             </div>
             <input type="number" value=${email.id} class="mail-id" hidden>
-          </div>`;
+          </button>`;
       });
 
       // Then add to each email a link to preview 
